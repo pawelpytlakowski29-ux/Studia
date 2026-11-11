@@ -228,6 +228,44 @@ void quick_sort(int lst[], int start, int end)
     quick_sort(lst, i1 + 1, end);
 }
 
+void DownHeap(int T[], int n, int i)
+{
+    int v = T[i];
+    int k = 2*i;
+
+    while (k <= n)
+    {
+        if (k + 1 <= n && T[k+1] > T[k]) k++;
+        if (v >= T[k]) break;
+        
+        T[i] = T[k];
+        i = k;
+        k = 2*i;
+    }
+
+    T[i] = v;
+}
+
+void CreateHeap(int T[], int n)
+{
+    for(int i = n/2; i>=1; i--)
+    {
+        DownHeap(T, n, i);
+    }
+}
+
+void HeapSort(int T[], int n)
+{
+    CreateHeap(T, n);
+    for(int i = n; i > 1; i--)
+    {
+        int max = T[1];
+        T[1] = T[i];
+        T[i] = max;
+        DownHeap(T, i-1, 1);
+    }
+}
+
 void print(int lst[], int n)
 {
     for (int i = 0; i < n; i++)
@@ -250,7 +288,7 @@ void inject_random(int lst[], int n)
 
 int main(int argc, char* argv[])
 {
-    long int N = 1000;
+    long int N = 100;
     if (argc > 1)
     {
         N = atol(argv[1]); 
@@ -264,7 +302,7 @@ int main(int argc, char* argv[])
     clock_gettime(CLOCK_MONOTONIC, &start);
     
     // Testowany algorytm
-    quick_sort(numbers, 0, N - 1);
+    merge_sort(numbers, 0, N-1);
     // Koniec testowanego algorytmu
     
     clock_gettime(CLOCK_MONOTONIC, &end);
